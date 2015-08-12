@@ -14,6 +14,8 @@
 # (c) 2015 Johan Dahlin
 # johan.dahlin (at) liu.se
 #
+# Distributed under the MIT license.
+#
 ##############################################################################
 ##############################################################################
 
@@ -153,7 +155,7 @@ iactPPMH1 = ppmh1.calcIACT();
 qpmh2.stepSize             = 1.0;
 
 # Set the initial Hessian
-qpmh2.epsilon              = 100;
+qpmh2.epsilon              = 1000;
 
 # Set the memory length of the quasi-Newton proposal
 qpmh2.memoryLength         = 100;
@@ -242,7 +244,7 @@ print("IACT for qPMH2: " + str( np.round(iactQPMH2,0)) + ".");
 
 #IACT for pPMH0: [ 12.  12.  11.].
 #IACT for pPMH1: [ 6.  6.  8.].
-#IACT for qPMH2: [ 4.  5.  4.].
+#IACT for qPMH2: [ 4.  4.  4.].
 
 ########################################################################
 # End of file

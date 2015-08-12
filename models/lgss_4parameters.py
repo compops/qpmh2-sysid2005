@@ -1,10 +1,19 @@
 ##############################################################################
 ##############################################################################
-# Model specification
-# Linear Gaussian state space model
-# Version 2014-12-03
+# Example code for
+# quasi-Newton particle Metropolis-Hastings
+# for a linear Gaussian state space model
 #
-# Copyright (c) 2014 Johan Dahlin [ johan.dahlin (at) liu.se ]
+# Please cite:
+#
+# J. Dahlin, F. Lindsten, T. B. Sch\"{o}n
+# "Quasi-Newton particle Metropolis-Hastings"
+# Proceedings of the 17th IFAC Symposium on System Identification,
+# Beijing, China, October 2015.
+#
+# (c) 2015 Johan Dahlin
+# johan.dahlin (at) liu.se
+#
 # Distributed under the MIT license.
 #
 ##############################################################################
@@ -190,3 +199,8 @@ class ssm(object):
 
     ddprior1                = empty_ddprior1
 
+##############################################################################
+##############################################################################
+# End of file
+##############################################################################
+##############################################################################

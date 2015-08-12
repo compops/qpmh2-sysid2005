@@ -1,21 +1,25 @@
-import numpy as np;
+##############################################################################
+##############################################################################
+# Example code for
+# quasi-Newton particle Metropolis-Hastings
+# for a linear Gaussian state space model
+#
+# Please cite:
+#
+# J. Dahlin, F. Lindsten, T. B. Sch\"{o}n
+# "Quasi-Newton particle Metropolis-Hastings"
+# Proceedings of the 17th IFAC Symposium on System Identification,
+# Beijing, China, October 2015.
+#
+# (c) 2015 Johan Dahlin
+# johan.dahlin (at) liu.se
+#
+# Distributed under the MIT license.
+#
+##############################################################################
+##############################################################################
 
-#=============================================================================
-# Make data noisy for the ABC procedure
-#=============================================================================
-def template_makeNoisy(model, sm ):
-    if ( model.transformY == "arctan" ):
-        if sm.weightdist == "boxcar":
-            model.y = np.arctan(model.ynoiseless) + np.random.uniform(-sm.tolLevel,sm.tolLevel,(model.T,1));
-        elif sm.weightdist == "gaussian":
-            model.y = np.arctan(model.ynoiseless) + sm.tolLevel * np.random.randn(model.T,1);
-    elif ( model.transformY == "none" ):
-        if sm.weightdist == "boxcar":
-            model.y = model.ynoiseless + np.random.uniform(-sm.tolLevel,sm.tolLevel,(model.T,1));
-        elif sm.weightdist == "gaussian":
-            model.y = model.ynoiseless + sm.tolLevel * np.random.randn(model.T,1);
-    else:
-        raise NameError("makeNoisy: unknown transformation of data.")
+import numpy as np;
 
 #=============================================================================
 # Copy data from an instance of this struct to another
@@ -152,3 +156,9 @@ def template_generateData(model,u=None,fileName=None,order=None):
             model.y = np.array(tmp[0:model.T,2], copy=True).reshape((model.T,1));
         else:
             raise NameError("generateData, import data: cannot import that order.");
+
+##############################################################################
+##############################################################################
+# End of file
+##############################################################################
+##############################################################################

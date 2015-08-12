@@ -14,6 +14,8 @@
 # (c) 2015 Johan Dahlin
 # johan.dahlin (at) liu.se
 #
+# Distributed under the MIT license.
+#
 ##############################################################################
 ##############################################################################
 
@@ -72,9 +74,6 @@ km.filter          = km.kf;
 # Use the RTS smoother to estimate the gradient
 km.smoother        = km.rts;
 
-# Set seed to reproduce the results
-np.random.seed( 87655678 );
-
 
 ##############################################################################
 # Setup the PMH algorithm
@@ -104,6 +103,9 @@ ppmh1.invHessian     = np.diag( (3e-02, 1e-03, 2e-03 ) )
 # Preconditioned PMH0 sampler
 ########################################################################
 
+# Set seed to reproduce the results
+np.random.seed( 87655678 );
+
 # Set the step size using the rule of thumb
 ppmh0.stepSize       = 2.562 / np.sqrt(th.nParInference);
 
@@ -121,6 +123,9 @@ iactPPMH0 = ppmh0.calcIACT();
 ########################################################################
 # Preconditioned PMH1 sampler
 ########################################################################
+
+# Set seed to reproduce the results
+np.random.seed( 87655678 );
 
 # Set the step size using the rule of thumb
 ppmh1.stepSize       = 1.125 * np.sqrt( th.nParInference**(-1/3) );
@@ -140,11 +145,14 @@ iactPPMH1 = ppmh1.calcIACT();
 # Quasi-Newton PMH2 sampler with hybrid correction
 ########################################################################
 
+# Set seed to reproduce the results
+np.random.seed( 87655678 );
+
 # Step size the sampler \epsilon_2
 qpmh2.stepSize             = 1.0;
 
 # Set the initial Hessian
-qpmh2.epsilon              = 100;
+qpmh2.epsilon              = 1000;
 
 # Set the memory length of the quasi-Newton proposal
 qpmh2.memoryLength         = 100;
@@ -233,7 +241,7 @@ print("IACT for qPMH2: " + str( np.round(iactQPMH2,0)) + ".");
 
 #IACT for pPMH0: [ 11.  12.  12.].
 #IACT for pPMH1: [ 6.  6.  6.].
-#IACT for qPMH2: [ 5.  8.  4.].
+#IACT for qPMH2: [ 4.  4.  4.].
 
 ########################################################################
 # End of file

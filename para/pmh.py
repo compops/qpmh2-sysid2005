@@ -1,10 +1,19 @@
 ##############################################################################
 ##############################################################################
-# Routines for
-# Particle Metrpolis-Hastings for Bayesian parameter inference
-# Version 2014-12-03
+# Example code for
+# quasi-Newton particle Metropolis-Hastings
+# for a linear Gaussian state space model
 #
-# Copyright (c) 2014 Johan Dahlin [ johan.dahlin (at) liu.se ]
+# Please cite:
+#
+# J. Dahlin, F. Lindsten, T. B. Sch\"{o}n
+# "Quasi-Newton particle Metropolis-Hastings"
+# Proceedings of the 17th IFAC Symposium on System Identification,
+# Beijing, China, October 2015.
+#
+# (c) 2015 Johan Dahlin
+# johan.dahlin (at) liu.se
+#
 # Distributed under the MIT license.
 #
 ##############################################################################
@@ -208,16 +217,18 @@ class stPMH(object):
         # Check if it is PSD
         if ( ~isPSD( self.hessianp [ self.iter,:,: ] ) ):
 
+            eigens = np.linalg.eig(self.hessianp [ self.iter,:,: ])[0];
+
             # Add a diagonal matrix proportional to the largest negative eigv during burnin
             if ( self.iter <= self.nBurnIn ):
                 mineigv = np.min( np.linalg.eig( self.hessianp [ self.iter,:,: ] )[0] )
                 self.hessianp [ self.iter,:,: ] = self.hessianp [ self.iter,:,: ] - 2.0 * mineigv * np.eye( self.nPars )
-                #print("Iteration: " + str(self.iter) + ", mirroring eigenvalues at: " + str( self.thp[self.iter,:] ) + " by adding " +  str( - 2.0 * mineigv ) );
+                print("Iteration: " + str(self.iter) + " has eigenvalues: " + str( eigens ) + " mirroring by adding " +  str( - 2.0 * mineigv ) );
 
             # Replace the Hessian with the posterior covariance matrix after burin
             if ( self.iter > self.nBurnIn ):
                 self.hessianp [ self.iter,:,: ] = self.empHessian;
-                #print("Iteration: " + str(self.iter) + ", replaced Hessian with pre-computed estimated at: " + str( self.thp[self.iter,:] ) );
+                print("Iteration: " + str(self.iter) + " has eigenvalues: " + str( eigens ) + " replaced Hessian with pre-computed estimated." );
 
     ##########################################################################
     # Quasi-Netwon proposal
@@ -230,38 +241,42 @@ class stPMH(object):
         # BFGS update for Hessian estimate
         if ( self.iter > self.memoryLength ):
 
-            # Extract the last unique parameters and their gradients
-            idx = np.sort( np.unique(self.ll,return_index=True)[1] )[-2:];
-
-            if ( np.max( self.iter - idx ) < self.memoryLength ):
-
-                # The last accepted step is inside of the memory length
-                skk = self.th[ idx[1] , : ]       - self.th[ idx[0], : ];
-                ykk = self.gradient[ idx[1] , : ] - self.gradient[ idx[0], : ];
-                foo = np.abs( np.dot( skk, ykk) / np.dot( ykk, ykk) );
-                Hk  = np.eye(self.nPars) * foo;
-
             # Extract estimates of log-likelihood and gradients from the
             # last moves
             self.extractUniqueElements();
 
-            # Add the contribution from the last memoryLength samples
-            for ii in range( (self.thU).shape[0] ):
+            if ( self.nHessianSamples[ self.iter ] > 2 ):
+                # Extract the last unique parameters and their gradients
+                idx = np.sort( np.unique(self.ll,return_index=True)[1] )[-2:];
 
-                # Calculate difference in gradient (ykk) and theta (skk)
-                ykk = self.gradientU[ii,:] - self.gradientU[ii-1,:];
-                skk = self.thU[ii,:]       - self.thU[ii-1,:];
+                if ( np.max( self.iter - idx ) < self.memoryLength ):
 
-                # Check if we have moved, otherwise to not add contribution to Hessian
-                if ( np.sum( skk ) != 0.0 ):
+                    # The last accepted step is inside of the memory length
+                    skk = self.th[ idx[1] , : ]       - self.th[ idx[0], : ];
+                    ykk = self.gradient[ idx[1] , : ] - self.gradient[ idx[0], : ];
+                    foo = np.abs( np.dot( skk, ykk) / np.dot( ykk, ykk) );
+                    Hk  = np.eye(self.nPars) * foo;
 
-                    # Compute rho
-                    rhok = 1.0 / ( np.dot( ykk, skk) );
+                # Add the contribution from the last memoryLength samples
+                for ii in range( (self.thU).shape[0] ):
 
-                    # Update Hessian estimate
-                    A1   = I - skk[:, np.newaxis] * ykk[np.newaxis, :] * rhok
-                    A2   = I - ykk[:, np.newaxis] * skk[np.newaxis, :] * rhok
-                    Hk   = np.dot(A1, np.dot(Hk, A2)) + ( rhok * skk[:, np.newaxis] * skk[np.newaxis, :] )
+                    # Calculate difference in gradient (ykk) and theta (skk)
+                    ykk = self.gradientU[ii,:] - self.gradientU[ii-1,:];
+                    skk = self.thU[ii,:]       - self.thU[ii-1,:];
+
+                    # Check if we have moved, otherwise to not add contribution to Hessian
+                    if ( np.sum( skk ) != 0.0 ):
+
+                        # Compute rho
+                        rhok = 1.0 / ( np.dot( ykk, skk) );
+
+                        # Update Hessian estimate
+                        A1   = I - skk[:, np.newaxis] * ykk[np.newaxis, :] * rhok
+                        A2   = I - ykk[:, np.newaxis] * skk[np.newaxis, :] * rhok
+                        Hk   = np.dot(A1, np.dot(Hk, A2)) + ( rhok * skk[:, np.newaxis] * skk[np.newaxis, :] )
+
+                # Return the negative Hessian estimate
+                Hk = -Hk;
 
         return Hk;
 
@@ -376,6 +391,8 @@ class stPMH(object):
 
         print("writeToFile: wrote results to file: " + fileOutName)
 
-#############################################################################################################################
+##############################################################################
+##############################################################################
 # End of file
-#############################################################################################################################
+##############################################################################
+##############################################################################
