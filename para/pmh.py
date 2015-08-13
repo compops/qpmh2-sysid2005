@@ -254,7 +254,7 @@ class stPMH(object):
                     # The last accepted step is inside of the memory length
                     skk = self.th[ idx[1] , : ]       - self.th[ idx[0], : ];
                     ykk = self.gradient[ idx[1] , : ] - self.gradient[ idx[0], : ];
-                    foo = np.abs( np.dot( skk, ykk) / np.dot( ykk, ykk) );
+                    foo = np.dot( skk, ykk) / np.dot( ykk, ykk);
                     Hk  = np.eye(self.nPars) * foo;
 
                 # Add the contribution from the last memoryLength samples

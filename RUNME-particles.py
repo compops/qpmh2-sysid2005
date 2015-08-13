@@ -244,7 +244,7 @@ print("IACT for qPMH2: " + str( np.round(iactQPMH2,0)) + ".");
 
 #IACT for pPMH0: [ 12.  12.  11.].
 #IACT for pPMH1: [ 6.  6.  8.].
-#IACT for qPMH2: [ 4.  4.  4.].
+#IACT for qPMH2: [ 4.  3.  4.].
 
 ########################################################################
 # End of file
