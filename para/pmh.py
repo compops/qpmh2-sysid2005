@@ -343,13 +343,22 @@ class stPMH(object):
     # Helper if parameters are rejected
     ##########################################################################
     def rejectParameters(self,thSys,):
-        self.th[self.iter,:]        = self.th[self.iter-1,:];
-        self.tho[self.iter,:]       = self.tho[self.iter-1,:];
-        self.ll[self.iter]          = self.ll[self.iter-1];
-        self.prior[self.iter,:]     = self.prior[self.iter-1,:]
-        self.gradient[self.iter,:]  = self.gradient[self.iter-1,:];
-        self.hessian[self.iter,:,:] = self.hessian[self.iter-1,:,:];
-        self.J[self.iter,:]         = self.J[self.iter-1,:];
+        if ( ( self.PMHtype == "qPMH2" ) & ( self.iter > self.memoryLength ) ):
+            self.th[self.iter,:]        = self.th[self.iter-1-self.memoryLength,:];
+            self.tho[self.iter,:]       = self.tho[self.iter-1-self.memoryLength,:];
+            self.ll[self.iter]          = self.ll[self.iter-1-self.memoryLength];
+            self.prior[self.iter,:]     = self.prior[self.iter-1-self.memoryLength,:]
+            self.gradient[self.iter,:]  = self.gradient[self.iter-1-self.memoryLength,:];
+            self.hessian[self.iter,:,:] = self.hessian[self.iter-1-self.memoryLength,:,:];
+            self.J[self.iter,:]         = self.J[self.iter-1-self.memoryLength,:];
+        else:
+            self.th[self.iter,:]        = self.th[self.iter-1,:];
+            self.tho[self.iter,:]       = self.tho[self.iter-1,:];
+            self.ll[self.iter]          = self.ll[self.iter-1];
+            self.prior[self.iter,:]     = self.prior[self.iter-1,:]
+            self.gradient[self.iter,:]  = self.gradient[self.iter-1,:];
+            self.hessian[self.iter,:,:] = self.hessian[self.iter-1,:,:];
+            self.J[self.iter,:]         = self.J[self.iter-1,:];
 
     ##########################################################################
     # Helper: compile the results and write to file
