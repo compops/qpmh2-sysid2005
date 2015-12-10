@@ -1,10 +1,10 @@
 # qpmh2-sysid2015
 
-This code was downloaded from < https://github.com/compops/qpmh2-sysid2015 > or from < http://users.isy.liu.se/en/rt/johda87/ > and contains the code used to produce the results in the paper
+This code was downloaded from < https://github.com/compops/qpmh2-sysid2015 > or from < http://liu.johandahlin.com/ > and contains the code used to produce the results in the paper
 
 * J. Dahlin, F. Lindsten and T. B. Schön, *Quasi-Newton particle Metropolis-Hastings*. Proceedings of the 17th IFAC Symposium on System Identification, Beijing, China, October 2015. 
 
-The papers are available as a preprint from < http://arxiv.org/pdf/1502.03656v2 > and < http://users.isy.liu.se/en/rt/johda87/ >.
+The papers are available as a preprint from < http://arxiv.org/pdf/1502.03656 > and < http://liu.johandahlin.com/ >.
 
 Requirements
 --------------
