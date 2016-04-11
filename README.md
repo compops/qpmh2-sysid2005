@@ -8,7 +8,7 @@ The papers are available as a preprint from < http://arxiv.org/pdf/1502.03656 > 
 
 Requirements
 --------------
-The program is written in Python 2.7 and makes use of NumPy 1.7.1, SciPy 0.12.0, Matplotlib 1.2.1, Pandas. Please have these packages installed, on Ubuntu they can be installed using "sudo pip install --upgrade *package-name* ".
+The code is written and tested for Python 2.7.6. The implementation makes use of NumPy 1.9.2, SciPy 0.15.1, Matplotlib 1.4.3 and Pandas 0.13.1. On Ubuntu, these packages can be installed/upgraded using "sudo pip install --upgrade package-name ".
 
 Included files
 --------------
